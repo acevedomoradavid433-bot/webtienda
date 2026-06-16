@@ -170,9 +170,11 @@ header .brand-sub { font-weight: 300; opacity: 0.7; }
 .free-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 .free-card { background: var(--bg3); border-radius: 16px; border: 1px solid var(--border2); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; overflow: hidden; }
 .free-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px var(--shadow); }
-.free-card .free-img { height: 180px; overflow: hidden; background: var(--bg2); }
+.free-card .free-img { height: 180px; overflow: hidden; background: var(--bg2); position: relative; }
 .free-card .free-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
 .free-card:hover .free-img img { transform: scale(1.05); }
+.free-card .free-img .img-count { position: absolute; top: 14px; right: 14px; background: rgba(0,0,0,0.8); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.65em; z-index: 2; backdrop-filter: blur(4px); }
+.free-card .free-img .preview-badge { position: absolute; bottom: 14px; right: 14px; background: rgba(0,0,0,0.7); color: var(--text2); padding: 4px 10px; border-radius: 6px; font-size: 0.65em; z-index: 2; backdrop-filter: blur(4px); border: 1px solid var(--border); }
 .free-card .free-body { padding: 20px 24px 24px; display: flex; flex-direction: column; flex: 1; }
 .free-card .free-icon { font-size: 2.6em; padding: 20px 24px 0; }
 .free-card h3 { font-size: 1em; margin-bottom: 6px; color: var(--text); }
@@ -393,7 +395,8 @@ const products = [
 
 let cart = JSON.parse(localStorage.getItem('excelCart')) || [];
 let currentImgIndex = 0;
-let currentImgProduct = null;
+let currentImgList = null;
+let currentImgName = '';
 
 function toggleTheme() {
   const html = document.documentElement;
@@ -557,21 +560,28 @@ function checkout() {
 
 function closeModal() { document.getElementById('checkoutModal').classList.remove('open'); }
 
-function openImgModal(productId, index) {
-  const p = products.find(x => x.id === productId);
-  if (!p || !p.imgs || !p.imgs.length) return;
-  currentImgProduct = p; currentImgIndex = index; updateImgModal();
+function openImgGallery(imgs, index, name) {
+  if (!imgs || !imgs.length) return;
+  currentImgList = imgs; currentImgIndex = index; currentImgName = name || '';
+  document.getElementById('modalImg').src = imgs[index];
+  const c = document.getElementById('imgCounter');
+  c.textContent = (index + 1) + ' de ' + imgs.length + (name ? ' — ' + name : '');
   document.getElementById('imgModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+function openImgModal(productId, index) {
+  const p = products.find(x => x.id === productId);
+  if (!p || !p.imgs || !p.imgs.length) return;
+  openImgGallery(p.imgs, index, p.name);
+}
 function closeImgModal() { document.getElementById('imgModal').classList.remove('open'); document.body.style.overflow = ''; }
 function updateImgModal() {
-  if (!currentImgProduct) return;
-  document.getElementById('modalImg').src = currentImgProduct.imgs[currentImgIndex];
-  document.getElementById('imgCounter').textContent = (currentImgIndex + 1) + ' de ' + currentImgProduct.imgs.length;
+  if (!currentImgList) return;
+  document.getElementById('modalImg').src = currentImgList[currentImgIndex];
+  document.getElementById('imgCounter').textContent = (currentImgIndex + 1) + ' de ' + currentImgList.length + (currentImgName ? ' — ' + currentImgName : '');
 }
-function prevImage() { if (!currentImgProduct) return; currentImgIndex = (currentImgIndex - 1 + currentImgProduct.imgs.length) % currentImgProduct.imgs.length; updateImgModal(); }
-function nextImage() { if (!currentImgProduct) return; currentImgIndex = (currentImgIndex + 1) % currentImgProduct.imgs.length; updateImgModal(); }
+function prevImage() { if (!currentImgList) return; currentImgIndex = (currentImgIndex - 1 + currentImgList.length) % currentImgList.length; updateImgModal(); }
+function nextImage() { if (!currentImgList) return; currentImgIndex = (currentImgIndex + 1) % currentImgList.length; updateImgModal(); }
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') { closeImgModal(); closeModal(); }
@@ -595,7 +605,11 @@ function renderFreebies() {
     const hasImgs = f.imgs && f.imgs.length > 0;
     return `
     <div class="free-card">
-      ${hasImgs ? `<div class="free-img"><img src="${f.imgs[0]}" alt="${f.name}"></div>` : `<div class="free-icon">${f.icon}</div>`}
+      ${hasImgs ? `<div class="free-img" onclick="openImgGallery(freebies[${i}].imgs, 0, freebies[${i}].name)" style="cursor:pointer;">
+        <img src="${f.imgs[0]}" alt="${f.name}">
+        ${f.imgs.length > 1 ? '<span class="img-count">📸 +' + (f.imgs.length-1) + '</span>' : ''}
+        <span class="preview-badge">🔍 Click para ver</span>
+      </div>` : `<div class="free-icon">${f.icon}</div>`}
       <div class="free-body">
         <h3>${f.name}</h3>
         <div class="free-desc">${f.desc}</div>
