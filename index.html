@@ -168,9 +168,13 @@ header .brand-sub { font-weight: 300; opacity: 0.7; }
 .free-section h2 { text-align: center; font-size: 1.4em; margin-bottom: 6px; }
 .free-section .sub { text-align: center; color: var(--text2); font-size: 0.85em; margin-bottom: 24px; }
 .free-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-.free-card { background: var(--bg3); border-radius: 16px; padding: 24px; border: 1px solid var(--border2); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
+.free-card { background: var(--bg3); border-radius: 16px; border: 1px solid var(--border2); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; overflow: hidden; }
 .free-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px var(--shadow); }
-.free-card .free-icon { font-size: 2.6em; margin-bottom: 10px; }
+.free-card .free-img { height: 180px; overflow: hidden; background: var(--bg2); }
+.free-card .free-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.free-card:hover .free-img img { transform: scale(1.05); }
+.free-card .free-body { padding: 20px 24px 24px; display: flex; flex-direction: column; flex: 1; }
+.free-card .free-icon { font-size: 2.6em; padding: 20px 24px 0; }
 .free-card h3 { font-size: 1em; margin-bottom: 6px; color: var(--text); }
 .free-card .free-desc { color: var(--text2); font-size: 0.8em; line-height: 1.6; flex: 1; margin-bottom: 14px; }
 .free-card .free-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; }
@@ -583,23 +587,27 @@ if ('serviceWorker' in navigator) {
 const freebies = [
   { icon: "📒", name: "Sistema Contable Profesional (PCGE Peru)", desc: "Contabilidad completa: Libro Diario, Mayor, Balance General, Estado Resultados, Flujo de Caja, Dashboard con KPIs. 80+ cuentas PCGE.", tags: ["contabilidad", "PCGE", "balance"], format: ".xlsm", size: "97 KB" },
   { icon: "📊", name: "Dashboard de Ventas + KPIs", desc: "Panel de control con graficos automaticos. Ventas diarias, semanales, mensuales. Producto top, margenes y metas.", tags: ["dashboard", "ventas", "KPIs"], format: ".xlsm", size: "45 KB" },
-  { icon: "💰", name: "Control de Gastos Personales", desc: "Registra tus ingresos y gastos diarios. Categorias automaticas, graficos de torta, presupuesto mensual y ahorro.", tags: ["finanzas", "presupuesto", "ahorro"], format: ".xlsx", size: "28 KB" },
+  { icon: "💰", name: "Presupuesto 50-30-20", desc: "Plantilla de presupuesto personal con el metodo 50-30-20. Controla gastos, ahorro e inversiones con graficos automaticos.", tags: ["presupuesto", "50-30-20", "ahorro"], format: ".xlsx", size: "28 KB", imgs: ["Imagenesdetienda/imagen3.jpeg","Imagenesdetienda/imagen4.jpeg","Imagenesdetienda/imagen5.jpeg","Imagenesdetienda/Imagen6.jpeg"] },
 ];
 function renderFreebies() {
   const grid = document.getElementById('freeGrid');
-  grid.innerHTML = freebies.map((f, i) => `
+  grid.innerHTML = freebies.map((f, i) => {
+    const hasImgs = f.imgs && f.imgs.length > 0;
+    return `
     <div class="free-card">
-      <div class="free-icon">${f.icon}</div>
-      <h3>${f.name}</h3>
-      <div class="free-desc">${f.desc}</div>
-      <div class="free-tags">${f.tags.map(t => `<span>#${t}</span>`).join('')}</div>
-      <span class="free-format">${f.format} ~ ${f.size}</span>
-      <a class="free-btn" href="https://wa.me/51959389843?text=${encodeURIComponent('Hola David, quiero la plantilla gratis: ' + f.name)}" target="_blank">
-        💬 Solicitar gratis
-        <span class="small">Te respondo al instante</span>
-      </a>
-    </div>
-  `).join('');
+      ${hasImgs ? `<div class="free-img"><img src="${f.imgs[0]}" alt="${f.name}"></div>` : `<div class="free-icon">${f.icon}</div>`}
+      <div class="free-body">
+        <h3>${f.name}</h3>
+        <div class="free-desc">${f.desc}</div>
+        <div class="free-tags">${f.tags.map(t => `<span>#${t}</span>`).join('')}</div>
+        <span class="free-format">${f.format} ~ ${f.size}</span>
+        <a class="free-btn" href="https://wa.me/51959389843?text=${encodeURIComponent('Hola David, quiero la plantilla gratis: ' + f.name)}" target="_blank">
+          💬 Solicitar gratis
+          <span class="small">Te respondo al instante</span>
+        </a>
+      </div>
+    </div>`;
+  }).join('');
 }
 renderFreebies();
 
