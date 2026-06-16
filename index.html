@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SystemsAcevedo - Sistemas Profesionales en Excel</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d0d0d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SystemsAcevedo">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+:root {
+  --bg: #0d0d0d;
+  --bg2: #111;
+  --bg3: #161616;
+  --bg4: #1a1a2e;
+  --text: #e0e0e0;
+  --text2: #888;
+  --text3: #555;
+  --border: rgba(255,255,255,0.05);
+  --border2: rgba(255,255,255,0.08);
+  --accent: #e94560;
+  --accent2: #0f3460;
+  --card-border: rgba(255,255,255,0.04);
+  --input-bg: rgba(255,255,255,0.04);
+  --shadow: rgba(0,0,0,0.3);
+  --hero-bg: linear-gradient(180deg, #0f0f0f 0%, #1a1a2e 50%, #0d0d0d 100%);
+  --header-bg: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+}
+[data-theme="light"] {
+  --bg: #f5f5f5;
+  --bg2: #ffffff;
+  --bg3: #ffffff;
+  --bg4: #e8f0fe;
+  --text: #1a1a1a;
+  --text2: #666;
+  --text3: #999;
+  --border: rgba(0,0,0,0.06);
+  --border2: rgba(0,0,0,0.1);
+  --accent: #d6336c;
+  --accent2: #4a7db5;
+  --card-border: rgba(0,0,0,0.06);
+  --input-bg: rgba(0,0,0,0.02);
+  --shadow: rgba(0,0,0,0.08);
+  --hero-bg: linear-gradient(180deg, #ffffff 0%, #f0f4ff 50%, #f5f5f5 100%);
+  --header-bg: linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #e8f0fe 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); transition: background 0.4s, color 0.4s; }
+
+header { background: var(--header-bg); color: var(--text); padding: 0; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); transition: background 0.4s; }
+.header-inner { max-width: 1300px; margin: 0 auto; padding: 14px 30px; display: flex; justify-content: space-between; align-items: center; }
+header h1 { font-size: 1.3em; display: flex; align-items: center; gap: 12px; }
+header h1 .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2em; }
+header .brand { color: var(--accent); font-weight: 700; }
+header .brand-sub { font-weight: 300; opacity: 0.7; }
+.cart-btn { background: var(--input-bg); border: 1px solid var(--border2); color: var(--text); padding: 10px 22px; border-radius: 10px; cursor: pointer; font-size: 0.9em; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
+.cart-btn:hover { background: rgba(233,69,96,0.1); border-color: var(--accent); }
+.cart-count { background: var(--accent); color: #fff; border-radius: 50%; width: 24px; height: 24px; font-size: 0.7em; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+
+.theme-toggle { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--bg3); border: 1px solid var(--border2); color: var(--text); font-size: 1.4em; cursor: pointer; z-index: 50; display: flex; align-items: center; justify-content: center; transition: all 0.3s; box-shadow: 0 4px 15px var(--shadow); }
+.theme-toggle:hover { transform: scale(1.1); border-color: var(--accent); }
+
+.hero { text-align: center; padding: 60px 30px 40px; background: var(--hero-bg); border-bottom: 1px solid var(--border); transition: background 0.4s; }
+.hero h2 { font-size: 2.2em; margin-bottom: 8px; }
+.hero h2 .highlight { color: var(--accent); }
+.hero p { color: var(--text2); font-size: 1.05em; max-width: 700px; margin: 0 auto 6px; }
+.hero .seller { font-size: 0.85em; color: var(--text3); margin-top: 6px; }
+.hero .seller strong { color: var(--accent); }
+
+.container { max-width: 1300px; margin: 0 auto; padding: 0 30px; }
+
+.categories { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 30px 0 25px; }
+.cat-btn { background: var(--input-bg); border: 1px solid var(--border2); padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 0.82em; transition: all 0.2s; color: var(--text2); }
+.cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cat-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 0 20px rgba(233,69,96,0.3); }
+
+.products { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; padding: 10px 0 60px; }
+.product { background: var(--bg3); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px var(--shadow); transition: transform 0.3s, box-shadow 0.3s, background 0.4s; display: flex; flex-direction: column; border: 1px solid var(--card-border); }
+.product:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(233,69,96,0.15); border-color: rgba(233,69,96,0.2); }
+.product-img { height: 200px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; }
+.product-img .bg-pattern { position: absolute; inset: 0; opacity: 0.05; }
+.product-img .badge { position: absolute; top: 14px; left: 14px; background: rgba(0,0,0,0.8); color: #fff; padding: 4px 12px; border-radius: 6px; font-size: 0.7em; font-weight: 600; z-index: 2; backdrop-filter: blur(4px); }
+.product-img .icon-wrap { font-size: 4em; position: relative; z-index: 1; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+.product-img .preview-badge { position: absolute; bottom: 14px; right: 14px; background: rgba(0,0,0,0.7); color: var(--text2); padding: 4px 10px; border-radius: 6px; font-size: 0.65em; z-index: 2; backdrop-filter: blur(4px); border: 1px solid var(--border); }
+.product-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.product:hover .product-img img { transform: scale(1.05); }
+.product-img .img-count { position: absolute; top: 14px; right: 14px; background: rgba(0,0,0,0.8); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.65em; z-index: 2; backdrop-filter: blur(4px); }
+.product-body { padding: 18px 22px 22px; flex: 1; display: flex; flex-direction: column; }
+.product h3 { font-size: 1.05em; margin-bottom: 6px; color: var(--text); }
+.product .desc { color: var(--text2); font-size: 0.82em; line-height: 1.6; margin-bottom: 12px; flex: 1; }
+.product .features { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; }
+.product .features span { background: var(--input-bg); padding: 3px 10px; border-radius: 4px; font-size: 0.68em; color: var(--text3); border: 1px solid var(--border); }
+.product .meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.product .price { font-size: 1.35em; font-weight: 700; color: var(--accent); }
+.product .price .old { font-size: 0.6em; font-weight: 400; color: var(--text3); text-decoration: line-through; margin-right: 6px; }
+.product .format { font-size: 0.72em; color: var(--text3); background: var(--input-bg); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
+.add-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: none; border-radius: 8px; font-size: 0.88em; cursor: pointer; transition: all 0.2s; font-weight: 600; }
+.add-btn:hover { background: linear-gradient(135deg, #d63851, #1a4a7a); }
+.add-btn.added { background: var(--input-bg); color: var(--text3); }
+
+.cart-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; backdrop-filter: blur(4px); }
+.cart-overlay.open { display: block; }
+.cart-panel { position: fixed; top: 0; right: -440px; width: 440px; height: 100%; background: var(--bg2); z-index: 201; transition: right 0.3s ease; display: flex; flex-direction: column; box-shadow: -4px 0 30px var(--shadow); border-left: 1px solid var(--border); }
+.cart-panel.open { right: 0; }
+.cart-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.cart-header h2 { font-size: 1.15em; }
+.cart-close { background: none; border: none; font-size: 1.5em; cursor: pointer; color: var(--text3); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.cart-close:hover { background: var(--input-bg); color: var(--text); }
+.cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
+.cart-empty { text-align: center; color: var(--text3); padding: 80px 0; font-size: 0.9em; }
+.cart-empty .empty-icon { font-size: 3em; margin-bottom: 12px; display: block; opacity: 0.3; }
+.cart-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.cart-item-img { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3em; flex-shrink: 0; }
+.cart-item-info { flex: 1; }
+.cart-item-info h4 { font-size: 0.85em; margin-bottom: 2px; }
+.cart-item-info .item-price { color: var(--accent); font-weight: 600; font-size: 0.82em; }
+.cart-item-actions { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+.cart-item-actions button { width: 26px; height: 26px; border: 1px solid var(--border2); background: transparent; color: var(--text2); border-radius: 5px; cursor: pointer; font-size: 0.85em; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.cart-item-actions button:hover { background: var(--input-bg); color: var(--text); }
+.cart-item-actions .qty { font-size: 0.82em; font-weight: 600; min-width: 22px; text-align: center; }
+.cart-item-actions .remove-item { color: var(--accent); border-color: rgba(233,69,96,0.3); }
+.cart-item-actions .remove-item:hover { background: rgba(233,69,96,0.1); }
+.cart-footer { padding: 20px 24px 24px; border-top: 1px solid var(--border); }
+.cart-total { display: flex; justify-content: space-between; font-size: 1.1em; font-weight: 700; margin-bottom: 14px; }
+.cart-total span:last-child { color: var(--accent); }
+.checkout-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: none; border-radius: 10px; font-size: 0.95em; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+.checkout-btn:hover { background: linear-gradient(135deg, #d63851, #1a4a7a); }
+.clear-btn { width: 100%; padding: 8px; background: none; color: var(--text3); border: 1px solid var(--border2); border-radius: 6px; font-size: 0.78em; cursor: pointer; margin-top: 8px; }
+.clear-btn:hover { color: var(--accent); border-color: rgba(233,69,96,0.3); }
+
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--bg4); color: var(--text); padding: 12px 28px; border-radius: 10px; font-size: 0.85em; z-index: 300; opacity: 0; transition: opacity 0.3s; pointer-events: none; box-shadow: 0 4px 20px var(--shadow); border: 1px solid var(--border); }
+.toast.show { opacity: 1; }
+
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 400; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.modal.open { display: flex; }
+.modal-content { background: var(--bg3); border-radius: 18px; padding: 36px; max-width: 520px; width: 90%; text-align: center; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px var(--shadow); border: 1px solid var(--border); }
+.modal-content h2 { margin-bottom: 4px; color: var(--accent); font-size: 1.4em; }
+.modal-content .sub { color: var(--text2); font-size: 0.85em; margin-bottom: 6px; }
+.modal-content .instructions { font-size: 0.8em; color: var(--text3); margin: 16px 0 8px; line-height: 1.8; }
+.modal-close { margin-top: 16px; padding: 10px 30px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9em; font-weight: 600; }
+.payment-links { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+.payment-links a { display: block; padding: 14px; background: var(--input-bg); border: 1px solid var(--border2); border-radius: 10px; text-decoration: none; color: var(--text2); font-weight: 600; transition: all 0.2s; font-size: 0.9em; }
+.payment-links a:hover { border-color: var(--accent); color: var(--accent); background: rgba(233,69,96,0.05); }
+.payment-links .paypal-link { border-color: rgba(0,156,222,0.3); color: #009cde; }
+.payment-links .paypal-link:hover { border-color: #009cde; background: rgba(0,156,222,0.05); }
+.payment-links .yape-link { border-color: rgba(142,36,170,0.3); color: #ce93d8; }
+.payment-links .yape-link:hover { border-color: #8e24aa; background: rgba(142,36,170,0.05); }
+
+.img-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 500; align-items: center; justify-content: center; }
+.img-modal.open { display: flex; }
+.img-modal-content { position: relative; max-width: 90vw; max-height: 90vh; }
+.img-modal-content img { max-width: 90vw; max-height: 85vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+.img-modal-close { position: fixed; top: 20px; right: 30px; background: none; border: none; color: #fff; font-size: 2em; cursor: pointer; opacity: 0.5; transition: opacity 0.2s; }
+.img-modal-close:hover { opacity: 1; }
+.img-modal-nav { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; align-items: center; }
+.img-modal-nav button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-size: 0.85em; }
+.img-modal-nav button:hover { background: rgba(255,255,255,0.2); }
+.img-modal-nav .counter { color: #888; font-size: 0.85em; }
+
+.social-proof { text-align: center; padding: 20px 0 10px; font-size: 0.78em; color: var(--text3); }
+.social-proof span { margin: 0 14px; }
+
+footer { text-align: center; padding: 30px 20px; color: var(--text3); font-size: 0.78em; border-top: 1px solid var(--border); }
+footer strong { color: var(--accent); }
+
+@media (max-width: 600px) {
+  .cart-panel { width: 100%; right: -100%; }
+  .products { grid-template-columns: 1fr; }
+  .hero h2 { font-size: 1.5em; }
+  header h1 { font-size: 1em; }
+  .container { padding: 0 16px; }
+  .theme-toggle { bottom: 20px; right: 20px; width: 44px; height: 44px; font-size: 1.2em; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <h1><span class="logo-icon">⚡</span> <span class="brand">Systems</span><span class="brand-sub">Acevedo</span></h1>
+    <button class="cart-btn" onclick="openCart()">
+      🛒 Carrito <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
+
+<section class="hero">
+  <h2><span class="highlight">SystemsAcevedo</span> — Sistemas Profesionales en Excel</h2>
+  <p>Soluciones inteligentes para tu negocio: finanzas, inventarios, facturación, talleres, ventas y más. Descarga inmediata después del pago.</p>
+  <p class="seller">📲 Yape: <strong>959 389 843</strong> &nbsp;·&nbsp; ✉️ PayPal: <strong>acevedomoradavid433@gmail.com</strong></p>
+  <div class="categories" id="categories"></div>
+</section>
+
+<div class="container">
+  <div class="products" id="products"></div>
+</div>
+
+<div class="social-proof">
+  <span>⚡ Sistemas profesionales en Excel</span>
+  <span>📥 Descarga inmediata</span>
+  <span>📱 Pago por Yape o PayPal</span>
+</div>
+
+<footer>
+  <p>© 2026 <strong>SystemsAcevedo</strong> — David Acevedo</p>
+  <p style="margin-top:4px; opacity:0.6;">Yape: 959 389 843 | PayPal: acevedomoradavid433@gmail.com</p>
+</footer>
+
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h2>🛒 Tu Carrito</h2>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty"><span class="empty-icon">🛒</span>Tu carrito está vacío</div>
+  </div>
+  <div class="cart-footer" id="cartFooter">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">$0.00</span></div>
+    <button class="checkout-btn" onclick="checkout()">Proceder al pago</button>
+    <button class="clear-btn" onclick="clearCart()">Vaciar carrito</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal" id="checkoutModal">
+  <div class="modal-content">
+    <h2>✅ Pedido recibido</h2>
+    <p class="sub">Elige tu método de pago</p>
+    <div id="checkoutItems" style="margin:14px 0;text-align:left;background:var(--input-bg);padding:16px;border-radius:10px;font-size:0.85em;border:1px solid var(--border);"></div>
+    <p class="instructions">
+      1. Haz clic en <strong>Yape</strong> o <strong>PayPal</strong> abajo<br>
+      2. Realiza el pago por el monto exacto<br>
+      3. Envíame el comprobante y recibes tus sistemas al instante ✨
+    </p>
+    <div class="payment-links">
+      <a href="#" id="yapeLink" target="_blank" class="yape-link">📱 Pagar con <strong>Yape</strong> — 959 389 843</a>
+      <a href="#" id="paypalLink" target="_blank" class="paypal-link">🌐 Pagar con <strong>PayPal</strong></a>
+    </div>
+    <button class="modal-close" onclick="closeModal()">Cerrar</button>
+  </div>
+</div>
+
+<div class="img-modal" id="imgModal">
+  <button class="img-modal-close" onclick="closeImgModal()">✕</button>
+  <div class="img-modal-content"><img id="modalImg" src="" alt="Vista previa"></div>
+  <div class="img-modal-nav">
+    <button onclick="prevImage()">← Anterior</button>
+    <span class="counter" id="imgCounter"></span>
+    <button onclick="nextImage()">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+const products = [
+  {
+    id: 1, name: "Taller Mecánico Completo",
+    desc: "Sistema TOTALMENTE AUTOMATIZADO para tu taller. Control de ingresos, órdenes de trabajo, inventario de repuestos, clientes y vehículos, facturación, caja diaria, planilla de mecánicos, dashboard y más. TODO EN UN SOLO ARCHIVO.",
+    price: 110.00, cat: "taller", icon: "🔧", format: ".xlsm",
+    tags: ["taller completo", "automatizado", "todo en uno"],
+    gradient: "linear-gradient(135deg, #e94560, #0f3460)",
+    imgs: ["Imagenesdetienda/iamgen1.jpg", "Imagenesdetienda/imagen2.jpg"]
+  },
+  {
+    id: 2, name: "Facturación Profesional",
+    desc: "Facturas, boletas y notas de crédito con numeración automática, IGV/IVA e impuestos. Incluye libro de ventas mensual.",
+    price: 14.99, cat: "finanzas", icon: "🧾", format: ".xlsx",
+    tags: ["facturas", "IGV", "contabilidad"],
+    gradient: "linear-gradient(135deg, #0f3460, #1a1a2e)",
+    imgs: []
+  },
+  {
+    id: 3, name: "Inventario y Stock",
+    desc: "Controla tu inventario con alertas de stock mínimo, valorización, proveedores y códigos de producto. Entradas y salidas.",
+    price: 12.99, cat: "negocios", icon: "📦", format: ".xlsx",
+    tags: ["stock", "inventario", "proveedores"],
+    gradient: "linear-gradient(135deg, #16213e, #0a0a0a)",
+    imgs: []
+  },
+  {
+    id: 4, name: "Dashboard de Ventas",
+    desc: "Visualiza ventas diarias, semanales y mensuales. Producto más vendido, meta de ingresos y margen de ganancia.",
+    price: 16.99, cat: "negocios", icon: "📊", format: ".xlsm",
+    tags: ["ventas", "dashboard", "KPIs"],
+    gradient: "linear-gradient(135deg, #1a1a2e, #2d2d44)",
+    imgs: []
+  },
+  {
+    id: 5, name: "Órdenes de Trabajo Taller",
+    desc: "Ordenes profesionales con datos del cliente, vehículo, servicios, repuestos y costos. Numeración automática.",
+    price: 14.99, cat: "taller", icon: "🔧", format: ".xlsx",
+    tags: ["taller", "órdenes", "vehículos"],
+    gradient: "linear-gradient(135deg, #1a1a2e, #0f3460)",
+    imgs: []
+  },
+  {
+    id: 6, name: "Control de Clientes CRM",
+    desc: "Base de datos de clientes con historial de compras, seguimiento, cumpleaños y segmentación por categorías.",
+    price: 10.99, cat: "negocios", icon: "👥", format: ".xlsx",
+    tags: ["clientes", "CRM", "seguimiento"],
+    gradient: "linear-gradient(135deg, #2d2d44, #1a1a2e)",
+    imgs: []
+  },
+  {
+    id: 7, name: "Presupuestos y Cotizaciones",
+    desc: "Crea presupuestos profesionales con desglose de productos/servicios, descuentos e impuestos. Aprobación con un clic.",
+    price: 8.99, cat: "negocios", icon: "📝", format: ".xlsx",
+    tags: ["presupuestos", "cotización", "ventas"],
+    gradient: "linear-gradient(135deg, #0a0a0a, #16213e)",
+    imgs: []
+  },
+  {
+    id: 8, name: "Control de Caja Diaria",
+    desc: "Apertura y cierre de caja, arqueo, ingresos/egresos del día. Reporte imprimible para tu negocio.",
+    price: 7.99, cat: "finanzas", icon: "💵", format: ".xlsx",
+    tags: ["caja", "arqueo", "diario"],
+    gradient: "linear-gradient(135deg, #16213e, #0f3460)",
+    imgs: []
+  },
+  {
+    id: 9, name: "Planilla de Empleados",
+    desc: "Registro de horas trabajadas, comisiones, bonos, descuentos y pagos. Control de asistencia mensual.",
+    price: 13.99, cat: "negocios", icon: "👨‍💼", format: ".xlsx",
+    tags: ["empleados", "planilla", "asistencia"],
+    gradient: "linear-gradient(135deg, #1a1a2e, #0a0a0a)",
+    imgs: []
+  },
+  {
+    id: 10, name: "Gestión de Proyectos",
+    desc: "Administra tareas, responsables, fechas y avances. Diagrama de Gantt automático y panel de progreso.",
+    price: 13.99, cat: "negocios", icon: "📋", format: ".xlsx",
+    tags: ["proyectos", "Gantt", "tareas"],
+    gradient: "linear-gradient(135deg, #0f3460, #1a1a2e)",
+    imgs: []
+  },
+  {
+    id: 11, name: "Calculadora de Precios",
+    desc: "Calcula precio de venta según costo, margen e IGV. Simulación de escenarios y punto de equilibrio.",
+    price: 8.99, cat: "finanzas", icon: "🧮", format: ".xlsx",
+    tags: ["precios", "márgenes", "simulación"],
+    gradient: "linear-gradient(135deg, #2d2d44, #16213e)",
+    imgs: []
+  },
+  {
+    id: 12, name: "Kit Completo Emprendedor",
+    desc: "Paquete con 8 sistemas: finanzas, facturación, inventario, clientes, ventas, caja, empleados y proyectos. Ahorra 40%.",
+    price: 49.99, cat: "negocios", icon: "🚀", format: ".xlsx",
+    tags: ["paquete", "completo", "ahorro"],
+    gradient: "linear-gradient(135deg, #e94560, #0f3460)",
+    imgs: []
+  }
+];
+
+let cart = JSON.parse(localStorage.getItem('excelCart')) || [];
+let currentImgIndex = 0;
+let currentImgProduct = null;
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  if (html.getAttribute('data-theme') === 'light') {
+    html.removeAttribute('data-theme');
+    btn.textContent = '🌙';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    html.setAttribute('data-theme', 'light');
+    btn.textContent = '☀️';
+    localStorage.setItem('theme', 'light');
+  }
+}
+
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'light') {
+  document.documentElement.setAttribute('data-theme', 'light');
+  document.getElementById('themeToggle').textContent = '☀️';
+}
+
+function getCategories() {
+  const cats = [...new Set(products.map(p => p.cat))];
+  const labels = { finanzas: '💰 Finanzas', negocios: '📋 Negocios', taller: '🔧 Taller' };
+  return cats.map(c => ({ id: c, label: labels[c] || c }));
+}
+
+function renderCategories() {
+  const div = document.getElementById('categories');
+  div.innerHTML = '<button class="cat-btn active" data-cat="all">📌 Todos</button>' +
+    getCategories().map(c => `<button class="cat-btn" data-cat="${c.id}">${c.label}</button>`).join('');
+  div.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      div.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProducts(btn.dataset.cat);
+    });
+  });
+}
+
+function renderProducts(cat = 'all') {
+  const grid = document.getElementById('products');
+  const filtered = cat === 'all' ? products : products.filter(p => p.cat === cat);
+  grid.innerHTML = filtered.map(p => {
+    const inCart = cart.find(i => i.id === p.id);
+    const hasImgs = p.imgs && p.imgs.length > 0;
+    return `
+      <div class="product">
+        <div class="product-img" onclick="${hasImgs ? `openImgModal(${p.id}, 0)` : ''}" style="background: ${p.gradient};">
+          <div class="bg-pattern"></div>
+          ${hasImgs ? `<img src="${p.imgs[0]}" alt="${p.name}">` : `<span class="icon-wrap">${p.icon}</span>`}
+          <span class="badge">${p.format}</span>
+          ${hasImgs && p.imgs.length > 1 ? `<span class="img-count">📸 +${p.imgs.length - 1}</span>` : ''}
+          <span class="preview-badge">${hasImgs ? '🔍 Click para ver' : '📸 Vista previa'}</span>
+        </div>
+        <div class="product-body">
+          <h3>${p.name}</h3>
+          <div class="desc">${p.desc}</div>
+          <div class="features">${p.tags.map(t => `<span>#${t}</span>`).join('')}</div>
+          <div class="meta">
+            <span class="price"><span class="old">$${(p.price * 1.35).toFixed(0)}</span>$${p.price.toFixed(2)}</span>
+            <span class="format">${p.format}</span>
+          </div>
+          <button class="add-btn ${inCart ? 'added' : ''}" onclick="toggleCart(${p.id})">
+            ${inCart ? '✓ En carrito' : 'Agregar al carrito'}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleCart(id) {
+  const idx = cart.findIndex(i => i.id === id);
+  if (idx > -1) {
+    cart.splice(idx, 1);
+    showToast('🗑 Eliminado del carrito');
+  } else {
+    const p = products.find(x => x.id === id);
+    cart.push({ ...p, qty: 1 });
+    showToast('✓ ' + p.name + ' agregado');
+  }
+  updateCart();
+}
+
+function updateCart() {
+  localStorage.setItem('excelCart', JSON.stringify(cart));
+  document.getElementById('cartCount').textContent = cart.reduce((s, i) => s + i.qty, 0);
+  const active = document.querySelector('.cat-btn.active');
+  renderProducts(active ? active.dataset.cat : 'all');
+  renderCartItems();
+}
+
+function renderCartItems() {
+  const div = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+  if (!cart.length) {
+    div.innerHTML = '<div class="cart-empty"><span class="empty-icon">🛒</span>Tu carrito está vacío<br><span style="font-size:0.8em;opacity:0.5;">Agrega productos para empezar</span></div>';
+    footer.style.display = 'none';
+    return;
+  }
+  footer.style.display = 'block';
+  div.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-img" style="background: ${item.gradient};">${item.icon}</div>
+      <div class="cart-item-info">
+        <h4>${item.name}</h4>
+        <div class="item-price">$${(item.price * item.qty).toFixed(2)}</div>
+        <div class="cart-item-actions">
+          <button onclick="changeQty(${item.id}, -1)">−</button>
+          <span class="qty">${item.qty}</span>
+          <button onclick="changeQty(${item.id}, 1)">+</button>
+          <button class="remove-item" onclick="removeItem(${item.id})" style="margin-left:6px;">🗑</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('cartTotal').textContent = '$' + cart.reduce((s, i) => s + i.price * i.qty, 0).toFixed(2);
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (item) { item.qty = Math.max(1, item.qty + delta); updateCart(); }
+}
+
+function removeItem(id) { cart = cart.filter(i => i.id !== id); updateCart(); }
+function clearCart() { if (!cart.length) return; cart = []; updateCart(); showToast('🗑 Carrito vaciado'); }
+
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function checkout() {
+  if (!cart.length) { showToast('Agrega productos al carrito primero'); return; }
+  const div = document.getElementById('checkoutItems');
+  div.innerHTML = cart.map(i =>
+    `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);"><span>${i.icon} ${i.name} <span style="opacity:0.5;font-size:0.85em">x${i.qty}</span></span><strong style="color:var(--accent);">$${(i.price * i.qty).toFixed(2)}</strong></div>`
+  ).join('') +
+    `<div style="display:flex;justify-content:space-between;padding:8px 0 0;font-weight:700;font-size:1em;"><span>Total</span><span style="color:var(--accent);">$${cart.reduce((s,i) => s + i.price * i.qty, 0).toFixed(2)}</span></div>`;
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const itemsStr = cart.map(i => `${i.name} x${i.qty}`).join(', ');
+  document.getElementById('yapeLink').href = `https://wa.me/51959389843?text=${encodeURIComponent('Hola David, quiero comprar: ' + itemsStr + ' por $' + total.toFixed(2) + '. Ya te pagué por Yape (959389843). Mi correo es:')}`;
+  document.getElementById('paypalLink').href = `https://paypal.me/davidacevedo433/${total.toFixed(2)}?item=${encodeURIComponent(itemsStr)}`;
+  document.getElementById('checkoutModal').classList.add('open');
+  closeCart();
+}
+
+function closeModal() { document.getElementById('checkoutModal').classList.remove('open'); }
+
+function openImgModal(productId, index) {
+  const p = products.find(x => x.id === productId);
+  if (!p || !p.imgs || !p.imgs.length) return;
+  currentImgProduct = p; currentImgIndex = index; updateImgModal();
+  document.getElementById('imgModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeImgModal() { document.getElementById('imgModal').classList.remove('open'); document.body.style.overflow = ''; }
+function updateImgModal() {
+  if (!currentImgProduct) return;
+  document.getElementById('modalImg').src = currentImgProduct.imgs[currentImgIndex];
+  document.getElementById('imgCounter').textContent = (currentImgIndex + 1) + ' de ' + currentImgProduct.imgs.length;
+}
+function prevImage() { if (!currentImgProduct) return; currentImgIndex = (currentImgIndex - 1 + currentImgProduct.imgs.length) % currentImgProduct.imgs.length; updateImgModal(); }
+function nextImage() { if (!currentImgProduct) return; currentImgIndex = (currentImgIndex + 1) % currentImgProduct.imgs.length; updateImgModal(); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { closeImgModal(); closeModal(); }
+  if (e.key === 'ArrowLeft' && document.getElementById('imgModal').classList.contains('open')) prevImage();
+  if (e.key === 'ArrowRight' && document.getElementById('imgModal').classList.contains('open')) nextImage();
+});
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+renderCategories();
+renderProducts();
+updateCart();
+</script>
+</body>
+</html>
