@@ -261,15 +261,7 @@ footer strong { color: var(--accent); }
 <script>
 const products = [
   {
-    id: 1, name: "Personal Finance Manager",
-    desc: "El sistema FINANCIERO PERSONAL más completo y buscado del mundo. Dashboard automático, control de ingresos/gastos, presupuestos por categoría, gráficos de pastel y barras, metas de ahorro, reportes mensuales y planilla de transacciones. TODO AUTOMATIZADO. Ideal para finanzas personales y familiares.",
-    price: 24.99, cat: "finanzas", icon: "💰", format: ".xlsx",
-    tags: ["finanzas personales", "presupuesto", "dashboard", "ahorros"],
-    gradient: "linear-gradient(135deg, #2ecc71, #1a1a2e)",
-    imgs: []
-  },
-  {
-    id: 2, name: "Taller Mecánico Completo",
+    id: 1, name: "Taller Mecánico Completo",
     desc: "Sistema TOTALMENTE AUTOMATIZADO para tu taller. Control de compras y ventas, órdenes de trabajo (PDF), inventario de repuestos, Proveedores y Clientes, alertas de stock, caja diaria, Seguimientos de OT y más. TODO EN UN SOLO ARCHIVO.",
     price: 110.00, cat: "taller", icon: "🔧", format: ".xlsm",
     tags: ["taller completo", "automatizado", "todo en uno"],
@@ -277,7 +269,7 @@ const products = [
     imgs: ["Imagenesdetienda/iamgen1.jpg", "Imagenesdetienda/imagen2.jpg"]
   },
   {
-    id: 3, name: "Facturación Profesional",
+    id: 2, name: "Facturación Profesional",
     desc: "Facturas, boletas y notas de crédito con numeración automática, IGV/IVA e impuestos. Incluye libro de ventas mensual.",
     price: 14.99, cat: "finanzas", icon: "🧾", format: ".xlsx",
     tags: ["facturas", "IGV", "contabilidad"],
@@ -285,7 +277,7 @@ const products = [
     imgs: []
   },
   {
-    id: 4, name: "Inventario y Stock",
+    id: 3, name: "Inventario y Stock",
     desc: "Controla tu inventario con alertas de stock mínimo, valorización, proveedores y códigos de producto. Entradas y salidas.",
     price: 12.99, cat: "negocios", icon: "📦", format: ".xlsx",
     tags: ["stock", "inventario", "proveedores"],
@@ -293,7 +285,7 @@ const products = [
     imgs: []
   },
   {
-    id: 5, name: "Dashboard de Ventas",
+    id: 4, name: "Dashboard de Ventas",
     desc: "Visualiza ventas diarias, semanales y mensuales. Producto más vendido, meta de ingresos y margen de ganancia.",
     price: 16.99, cat: "negocios", icon: "📊", format: ".xlsm",
     tags: ["ventas", "dashboard", "KPIs"],
@@ -301,7 +293,7 @@ const products = [
     imgs: []
   },
   {
-    id: 6, name: "Órdenes de Trabajo Taller",
+    id: 5, name: "Órdenes de Trabajo Taller",
     desc: "Ordenes profesionales con datos del cliente, vehículo, servicios, repuestos y costos. Numeración automática.",
     price: 14.99, cat: "taller", icon: "🔧", format: ".xlsx",
     tags: ["taller", "órdenes", "vehículos"],
@@ -309,7 +301,7 @@ const products = [
     imgs: []
   },
   {
-    id: 7, name: "Control de Clientes CRM",
+    id: 6, name: "Control de Clientes CRM",
     desc: "Base de datos de clientes con historial de compras, seguimiento, cumpleaños y segmentación por categorías.",
     price: 10.99, cat: "negocios", icon: "👥", format: ".xlsx",
     tags: ["clientes", "CRM", "seguimiento"],
@@ -317,7 +309,7 @@ const products = [
     imgs: []
   },
   {
-    id: 8, name: "Presupuestos y Cotizaciones",
+    id: 7, name: "Presupuestos y Cotizaciones",
     desc: "Crea presupuestos profesionales con desglose de productos/servicios, descuentos e impuestos. Aprobación con un clic.",
     price: 8.99, cat: "negocios", icon: "📝", format: ".xlsx",
     tags: ["presupuestos", "cotización", "ventas"],
@@ -325,7 +317,7 @@ const products = [
     imgs: []
   },
   {
-    id: 9, name: "Control de Caja Diaria",
+    id: 8, name: "Control de Caja Diaria",
     desc: "Apertura y cierre de caja, arqueo, ingresos/egresos del día. Reporte imprimible para tu negocio.",
     price: 7.99, cat: "finanzas", icon: "💵", format: ".xlsx",
     tags: ["caja", "arqueo", "diario"],
@@ -333,7 +325,7 @@ const products = [
     imgs: []
   },
   {
-    id: 10, name: "Planilla de Empleados",
+    id: 9, name: "Planilla de Empleados",
     desc: "Registro de horas trabajadas, comisiones, bonos, descuentos y pagos. Control de asistencia mensual.",
     price: 13.99, cat: "negocios", icon: "👨‍💼", format: ".xlsx",
     tags: ["empleados", "planilla", "asistencia"],
@@ -341,7 +333,7 @@ const products = [
     imgs: []
   },
   {
-    id: 11, name: "Gestión de Proyectos",
+    id: 10, name: "Gestión de Proyectos",
     desc: "Administra tareas, responsables, fechas y avances. Diagrama de Gantt automático y panel de progreso.",
     price: 13.99, cat: "negocios", icon: "📋", format: ".xlsx",
     tags: ["proyectos", "Gantt", "tareas"],
@@ -349,7 +341,7 @@ const products = [
     imgs: []
   },
   {
-    id: 12, name: "Calculadora de Precios",
+    id: 11, name: "Calculadora de Precios",
     desc: "Calcula precio de venta según costo, margen e IGV. Simulación de escenarios y punto de equilibrio.",
     price: 8.99, cat: "finanzas", icon: "🧮", format: ".xlsx",
     tags: ["precios", "márgenes", "simulación"],
@@ -357,7 +349,7 @@ const products = [
     imgs: []
   },
   {
-    id: 13, name: "Kit Completo Emprendedor",
+    id: 12, name: "Kit Completo Emprendedor",
     desc: "Paquete con 8 sistemas: finanzas, facturación, inventario, clientes, ventas, caja, empleados y proyectos. Ahorra 40%.",
     price: 49.99, cat: "negocios", icon: "🚀", format: ".xlsx",
     tags: ["paquete", "completo", "ahorro"],
